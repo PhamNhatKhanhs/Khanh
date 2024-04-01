@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid #ddd;
+        }
+
+        th,
+        td {
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .button {
+            background-color: #f44336;
+            color: white;
+            padding: 8px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+            opacity: 0.9;
+        }
+
+        .button:hover {
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Quản lý sinh viên</h2>
+
+    <button class="button" id="addNewRowBtn">Thêm mới</button>
+
+    <table id="studentTable">
+        <tr>
+            <th>TT</th>
+            <th>MSV</th>
+            <th>Tên</th>
+            <th>Số ĐT</th>
+            <th>Ngày tháng năm sinh</th>
+            <th>Nơi sinh</th>
+            <th>Năm học</th>
+            <th>Thành tích</th>
+            <th>Thao tác</th>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>D12345678</td>
+            <td>Nguyễn Văn A</td>
+            <td>0589123456</td>
+            <td>21/08/2000</td>
+            <td>Hà Nội</td>
+            <td>2024</td>
+            <td>Tốt</td>
+
+        </tr>
+    </table>
+
+    <script>
+        document.getElementById('addNewRowBtn').addEventListener('click', function () {
+            var table = document.getElementById('studentTable').getElementsByTagName('tbody')[0];
+            var newRow = table.insertRow();
+            for (var i = 0; i < 8; i++) {
+                var cell = newRow.insertCell(i);
+                if (i === 0 || i === 3 || i === 4 || i === 6) {
+
+                    cell.innerHTML = '<input type="number">';
+                } else {
+                    cell.innerHTML = '<input type="text">';
+                }
+            }
+
+            var buttonCell = newRow.insertCell(8);
+            buttonCell.innerHTML = '<button class="button saveBtn">📝</button><button class="button deleteBtn">❌</button>';
+            var saveBtn = buttonCell.querySelector('.saveBtn');
+            var deleteBtn = buttonCell.querySelector('.deleteBtn');
+            saveBtn.addEventListener('click', function () {
+                var inputs = newRow.getElementsByTagName('input');
+                var tableRow = document.createElement('tr');
+                for (var i = 0; i < inputs.length; i++) {
+                    var cell = tableRow.insertCell(i);
+                    cell.innerHTML = inputs[i].value;
+                    newRow.remove();
+                }
+
+                var buttonCell = tableRow.insertCell(inputs.length);
+                buttonCell.innerHTML = '<button class="button saveBtn">📝</button><button class="button deleteBtn">❌</button>';
+                buttonCell.querySelector('.saveBtn').removeEventListener('click', null);
+                buttonCell.querySelector('.saveBtn').addEventListener('click', function () {
+                    var data = [];
+                    for (var i = 0; i < inputs.length; i++) {
+                        data.push(inputs[i].value);
+                    }
+                    localStorage.setItem('studentData', JSON.stringify(data));
+                    var savedData = JSON.parse(localStorage.getItem('studentData'));
+                    console.log('Dữ liệu đã lưu:', savedData);
+                });
+                buttonCell.querySelector('.deleteBtn').addEventListener('click', function () {
+                    table.deleteRow(tableRow.rowIndex);
+                });
+                var tableBody = document.getElementById('studentTable').getElementsByTagName('tbody')[0];
+                tableBody.appendChild(tableRow);
+            });
+            deleteBtn.addEventListener('click', function () {
+
+                table.deleteRow(newRow.rowIndex);
+            });
+        });
+    </script>
+
+
+
+</body>
+
+</html>

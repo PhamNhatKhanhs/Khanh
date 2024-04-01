@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="login.css">
+    
+
+    <title>Login Page</title>
+</head>
+
+<body>
+    <div class="login-container">
+        <h2>Login</h2>
+        <form class="login-form" onsubmit="login(event)">
+            <div class="input-group">
+                <input type="text" id="username" placeholder="Username" required>
+                <span class="input-highlight">*</span>
+            </div>
+            <div class="input-group">
+                <input type="password" id="password" placeholder="Password" required>
+                <span class="input-highlight">*</span>
+            </div>
+            <button type="submit" class="submit-btn">Submit</button>
+        </form>
+    </div>
+
+    <script>
+        function login(event) {
+            event.preventDefault();
+            var username = document.getElementById("username").value;
+            var password = document.getElementById("password").value;
+
+            if (username === "admin" && password === "admin") {
+                window.location.href = "admin.html";
+            } else {
+                alert("Tài khoản hoặc mật khẩu không chính xác");
+            }
+        }
+    </script>
+</body>
+
+</html>
